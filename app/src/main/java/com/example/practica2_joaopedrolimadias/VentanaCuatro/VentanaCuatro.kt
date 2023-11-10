@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.practica2_joaopedrolimadias.R
 
 class VentanaCuatro {
+    //Profe
     @SuppressLint("NotConstructor")
     @Composable
     fun VentanaCuatro(){
