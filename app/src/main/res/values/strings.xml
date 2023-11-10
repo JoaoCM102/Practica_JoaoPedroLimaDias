@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Quiz</string>
+    <string name="llados">Es como fuck vaya lambo</string>
+    <string name="Pregunta1">¿Es  Venezuela el mejor equipo del mundo?</string>
+    <string name="Pregunta2">¿Tienes hambre?</string>
+    <string name="Pregunta3">¿Has leído un libro esta semana?</string>
+    <string name="Pregunta4">¿Has practicado deportes recientemente?</string>
+    <string name="Pregunta5">¿Me apruebas?</string>
+    <string name="Pregunta6">¿Sobrevives si te tiras de un quinto piso?</string>
+    <string name="Pregunta7">¿Mano tengo Fe?</string>
+    <string name="Pregunta8">España es la mejor ONG del mundo</string>
+    <string name="Pregunta9">¿Paraguay existe?</string>
+    <string name="Pregunta10">Francia es el mejor pais del mundo</string>
+    <string name="preference_file_key">preference_file_key</string>
+    <string name="suuu">preference_file_key</string>
+</resources>
