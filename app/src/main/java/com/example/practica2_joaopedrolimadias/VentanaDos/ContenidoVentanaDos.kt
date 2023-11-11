@@ -1,5 +1,6 @@
 package com.example.practica2_joaopedrolimadias.VentanaDos
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,17 +23,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.practica2_joaopedrolimadias.Botones.Botones
+import com.example.practica2_joaopedrolimadias.ListadoOtroArray
+import com.example.practica2_joaopedrolimadias.VentanaCinco.readAndProcessFile
 
 class ContenidoVentanaDos {
     @Composable
-    fun Componente(){
+    fun Componente(context: Context){
         var listaPregutas = MeterDatos().Datos()
+        var listaPreguntasArray = ArrayList<ListadoOtroArray>()
+        listaPreguntasArray = readAndProcessFile(context,"Archivo")
         var cambio by remember { mutableStateOf(0) }
         var siONo by remember { mutableStateOf(true) }
         var textoo by remember { mutableStateOf("") }
         var colorF by remember { mutableStateOf(Color.Blue) }
         var colorV by remember { mutableStateOf(Color.Blue) }
-        if(cambio == listaPregutas.size){cambio = 0}
+       // if(cambio == listaPregutas.size){cambio = 0}
         if(cambio < 0){cambio = listaPregutas.size -1 }
         Column(verticalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxSize()) {
             Text(text = stringResource(id = listaPregutas[cambio].texto), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())

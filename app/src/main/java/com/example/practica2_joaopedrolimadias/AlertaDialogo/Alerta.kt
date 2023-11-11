@@ -21,22 +21,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.practica2_joaopedrolimadias.ListadoOtroArray
 import com.example.practica2_joaopedrolimadias.R
+import com.example.practica2_joaopedrolimadias.VentanaCuatro.VentanaCuatro
 import com.example.practica2_joaopedrolimadias.VentanaDos.MeterDatos
 
 class Alerta {
     @SuppressLint("NotConstructor")
     @Composable
-    fun Alerta(num : Int ,Atras : () -> Unit){
+    fun Alerta(num : Int ,Atras : () -> Unit,numero : Int){
     var cambio by remember { mutableStateOf(0) }
         var texto by remember { mutableStateOf("") }
         var img by remember { mutableStateOf(R.drawable.flechaderecha) }
         println(num)
         println(MeterDatos().listaPregutas.size )
-        if(num == MeterDatos().listaPregutas.size ){
+        if(num == MeterDatos().listaPregutas.size + numero ){
             texto = "Increible, todo bien, seguro facturas millones"
             img = R.drawable.dinero
-        }else if(num < MeterDatos().listaPregutas.size && num > ((MeterDatos().listaPregutas.size)/2)){
+        }else if(num < MeterDatos().listaPregutas.size && num > ((MeterDatos().listaPregutas.size+numero)/2)){
             texto = "Bueno, no esta mal no eres tan mileurista como pensaba"
             img = R.drawable.moneda
         }else{texto = "Eres un ######### mileurista, ponte a hacer burpees"

@@ -57,15 +57,3 @@ class MainActivity : ComponentActivity() {
 
 
 
-@Preview
-@Composable
-fun componentePreview(){
-   // GrafoNavegacion()
-}
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Practica2_JoaoPedroLimaDiasTheme {
-        ContenidoVentanaDos().Componente()
-    }
-}

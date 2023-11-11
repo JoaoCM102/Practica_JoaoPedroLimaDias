@@ -28,6 +28,8 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.practica2_joaopedrolimadias.ListadoOtroArray
+import com.example.practica2_joaopedrolimadias.R
 import kotlinx.coroutines.selects.select
 import java.io.BufferedReader
 import java.io.FileReader
@@ -36,12 +38,13 @@ class VentanaCinco {
     @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
     @SuppressLint("NotConstructor")
     @Composable
-    fun VentanaCinco(context: Context) : String{
+    fun VentanaCinco(context: Context){
 
         var textFieldValue by remember { mutableStateOf("") }
         var resultText by remember { mutableStateOf("") }
+        var valorDeTrueOrFalse by remember { mutableStateOf("") }
+
         var keyboardController by remember { mutableStateOf<SoftwareKeyboardController?>(null) }
-        var valor by remember { mutableStateOf("") }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,16 +64,30 @@ class VentanaCinco {
                 modifier = Modifier
                     .fillMaxWidth()
             )
+            RadioBoton(valorDeTrueOrFalse) { newValue ->
+                valorDeTrueOrFalse = newValue
+            }
+            Button(
+                onClick = {
+                    resultText = textFieldValue
+                    createFile(context,"Archivo", "$resultText\n$valorDeTrueOrFalse ")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text("Poner")}
 
         }
-        valor = textFieldValue
-        return valor
+
+
     }
 
 }
 @Composable
-fun RadioBoton() : String {
+fun RadioBoton(selectValue: String, Cambio : (String) -> Unit) {
     var selectedValue by remember { mutableStateOf("True") }
+    Cambio("True")
     var valor by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
@@ -81,11 +98,17 @@ fun RadioBoton() : String {
         ) {
             RadioButton(
                 selected = selectedValue == "True",
-                onClick = { selectedValue = "True" },
+                onClick = {
+                    selectedValue="True"
+                    Cambio("True")
+                },
                 modifier = Modifier
                     .selectable(
                         selected = selectedValue == "True",
-                        onClick = { selectedValue = "True" }
+                        onClick = {
+                            selectedValue="True"
+                            Cambio("True")
+                        }
                     )
             )
             Text("True")
@@ -97,27 +120,23 @@ fun RadioBoton() : String {
         ) {
             RadioButton(
                 selected = selectedValue == "False",
-                onClick = { selectedValue = "False" },
+                onClick = {
+                    selectedValue="False"
+                    Cambio("False")
+                },
                 modifier = Modifier
                     .selectable(
                         selected = selectedValue == "False",
-                        onClick = { selectedValue = "False" }
+                        onClick = {
+                            Cambio("False")
+                            selectedValue="False"
+                        }
                     )
             )
             Text("False")
 
         }
-      //  Button(
-       //     onClick = {
-//                createFile(context,"Archivo", "$valor\n$selectedValue ")
-//            },
-       //     modifier = Modifier
-      //          .fillMaxWidth()
-       //         .height(50.dp)
-      //  ) {
-       //     Text("Poner")}
     }
-    return selectedValue
 }
 
 fun createFile(context: Context, fileName: String, content: String) {
@@ -128,13 +147,12 @@ fun createFile(context: Context, fileName: String, content: String) {
         if (fichero.exists()) {
             // Si el archivo ya existe, añadir el nuevo contenido al final
             val bw = BufferedWriter(FileWriter(fichero, true))
-            bw.write(content)
-            bw.newLine()
+            bw.write(content+ "\n")
             bw.close()
         } else {
             // Si el archivo no existe, crearlo con el nuevo contenido
             val bw = BufferedWriter(FileWriter(fichero))
-            bw.write(content)
+            bw.write(content + "\n")
             bw.close()
         }
 
@@ -143,43 +161,43 @@ fun createFile(context: Context, fileName: String, content: String) {
         e.printStackTrace()
     }
 }
-
-private fun readAndProcessFile(context: Context, fileName: String) {
+    fun readAndProcessFile(context: Context, fileName: String) : ArrayList<ListadoOtroArray>{
+    var BienMal = true
+    var Texto = ""
+    var listadoOtroArray = ArrayList<ListadoOtroArray>()
     try {
         val rutaFichero = context.filesDir
         val fichero = File(rutaFichero, fileName)
         var lineCount = 0
 
         BufferedReader(FileReader(fichero)).use { reader ->
-            var line1: String? = reader.readLine()
-            var line2: String?
+            var line: String?
 
-            while (line1 != null) {
-                line2 = reader.readLine()
+            var texto = ""
+            var trueOrFalse = true
+            while (reader.readLine().also { line = it } != null) {
+                lineCount++
 
-                if (line2 != null) {
-                    println("$line1")
-                    println("$line2")
+                if (lineCount % 2 == 1) {
+
+                    println("Primer valor = $line")
+                    texto = "$line"
                 } else {
-                    // Si el número de líneas en el archivo es impar,
-                    // puedes manejar la última línea de manera diferente
-                    println("$line2")
-                }
+                    // Línea par, considerar como "Primer valor booleano"
 
-                line1 = reader.readLine()
-                lineCount += 2
+                    println("Primer valor booleano = $line")
+                    if ("$line".equals("True")){
+                        trueOrFalse = true
+                    }else{ trueOrFalse = false}
+
+                }
+                var meter = ListadoOtroArray(texto, R.drawable.quiz,trueOrFalse)
+                listadoOtroArray.add(meter)
             }
         }
-
         println("Se procesaron $lineCount líneas.")
     } catch (e: Exception) {
         e.printStackTrace()
     }
-}
-@Composable
-fun Buton(context: Context){
-    var Boton  = RadioBoton()
-    var Num = VentanaCinco()
-    Button(onClick =  { createFile(context, "Archivo", "e") }, Text( "vamos"))
-
+    return listadoOtroArray
 }

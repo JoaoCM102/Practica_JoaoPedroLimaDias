@@ -1,5 +1,6 @@
 package com.example.practica2_joaopedrolimadias.VentanaTres
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,14 +26,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.example.practica2_joaopedrolimadias.AlertaDialogo.Alerta
 import com.example.practica2_joaopedrolimadias.Botones.Botones
+import com.example.practica2_joaopedrolimadias.ListadoOtroArray
 import com.example.practica2_joaopedrolimadias.Rutas.Rutas
+import com.example.practica2_joaopedrolimadias.VentanaCinco.VentanaCinco
+import com.example.practica2_joaopedrolimadias.VentanaCinco.readAndProcessFile
+import com.example.practica2_joaopedrolimadias.VentanaCuatro.VentanaCuatro
 import com.example.practica2_joaopedrolimadias.VentanaDos.MeterDatos
 
 class VentanaTres {
     @Composable
-    fun Tres(navController: NavHostController?){
+    fun Tres(navController: NavHostController?,context: Context){
         var listaPregutas = MeterDatos().Datos()
+        var listaPreguntasArray = ArrayList<ListadoOtroArray>()
+        listaPreguntasArray = readAndProcessFile(context,"Archivo")
         var cambio by remember { mutableStateOf(0) }
+        var cambioNuevo by remember { mutableStateOf(0) }
         var siONo by remember { mutableStateOf(true) }
         var textoo by remember { mutableStateOf("") }
         var colorF by remember { mutableStateOf(Color.Blue) }
@@ -75,9 +83,48 @@ class VentanaTres {
                     }
                 }
                 println(Num)
-            }else{
-                Alerta().Alerta(num = Num) { navController?.navigate(Rutas.PantallaUno.ruta) }}
+            }else if (cambioNuevo < listaPreguntasArray.size){
+                Column(verticalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxSize()) {
+                    Text(text = listaPreguntasArray[cambioNuevo].texto, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                    Image(painterResource(id = listaPreguntasArray[cambioNuevo].imagen ), contentDescription = null , modifier = Modifier.fillMaxWidth(), contentScale = ContentScale.FillWidth)
+                    Row() {
+                        if (!siONo){
+                            Text(text = textoo , color = Color.Red ,textAlign = TextAlign.Center,modifier = Modifier.fillMaxWidth())
+                        }else{
+                            Text(text = textoo, color = Color.Green ,textAlign = TextAlign.Center,modifier = Modifier.fillMaxWidth())
+                        }
+                    }
+                    Row( horizontalArrangement = Arrangement.SpaceEvenly,modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(), verticalAlignment = Alignment.Bottom ) {
 
+                        Button(onClick = {
+                            if (!listaPreguntasArray[cambioNuevo].verdaderoOFalso){
+                                siONo = true
+                                Num++
+                            }else{siONo = false
+                            }
+                            cambioNuevo++
+                        }, colors = ButtonDefaults.buttonColors(containerColor = colorF)) {
+                            Text(text = "Falso")
+                        }
+                        Button(onClick = { if (listaPreguntasArray[cambioNuevo].verdaderoOFalso){
+                            siONo = true
+                            Num++
+                        }else{siONo = false
+                        }
+                            cambioNuevo++
+                        }, colors = ButtonDefaults.buttonColors(containerColor = colorV)) {
+                            Text(text = "Verdadero")
+                        }
+                    }
+                }
+            }else {
+                Alerta().Alerta(
+                    num = Num,
+                    { navController?.navigate(Rutas.PantallaUno.ruta) },
+                    listaPreguntasArray.size)
+            }
         }
     }
 }

@@ -29,11 +29,11 @@ fun GrafoNavegacion(context: Context){
         }
 
         composable(Rutas.PantallaDos.ruta){
-            ContenidoVentanaDos().Componente()
+            ContenidoVentanaDos().Componente(context)
         }
 
         composable(Rutas.PantallaTres.ruta){
-            VentanaTres().Tres(navController = navController)
+            VentanaTres().Tres(navController = navController,context)
         }
 
         composable(Rutas.PantallaCuatro.ruta){
